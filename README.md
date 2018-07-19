@@ -16,3 +16,8 @@ and copy the header files into a location that is in the PATH e.g.
     tar -xvf ~/eigen-eigen-<build-info>
     cd eigen-eigen-<build-info>
     sudo cp -r Eigen /usr/local/include
+
+## Usage
+For example
+
+    python3 test.py 10000 x x cholesky_dense numpy
