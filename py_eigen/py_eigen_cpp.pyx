@@ -4,6 +4,7 @@ Cython."""
 cimport cython
 import numpy as np
 cimport numpy as np
+from contexttimer import Timer
 
 
 cdef extern from "my_program.h":
@@ -71,4 +72,6 @@ def cholesky_dense_d(double[:,:] A, double[:,:] L):
     # assert L.shape[0] == m
     # assert L.shape[1] == n
 
-    matrix_cholesky_d_c(&A[0,0], &L[0,0], m, n)
+    with Timer() as t:
+        matrix_cholesky_d_c(&A[0,0], &L[0,0], m, n)
+    print("Cython time: %s" % t.elapsed)

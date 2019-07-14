@@ -1,4 +1,5 @@
 #include <iostream>
+#include <ctime>
 #include <Eigen/Dense>
 #include <Eigen/SparseCore>
 #include <Eigen/SparseCholesky>
@@ -26,10 +27,15 @@ int matrix_cholesky_d_c(double *A, double *L_T, int m, int n) {
     // According to eigen docs, we should use column major for storing lower
     // traingular or row major for storing upper triangular, to avoid 20%
     // slowdown.
+    // Note as A is symmetric, it doesn't matter if we use ColMajor when it
+    // was stored in RowMajor in Python. Similarly for L, it just affects if
+    // we get the lower or upper traingular factor.
     Map<Matrix <double, Dynamic, Dynamic, ColMajor> > A_mat(A, m, n);
     Map<Matrix <double, Dynamic, Dynamic, ColMajor> > L_mat(L_T, m, n);
     LLT<Matrix <double, Dynamic, Dynamic> > llt;
+    clock_t start = clock();
     llt.compute(A_mat);
+    cout << "LLT time: " << (clock() - start)/(double) CLOCKS_PER_SEC << "s" << endl;
     L_mat = llt.matrixL();
 
     return 0;
